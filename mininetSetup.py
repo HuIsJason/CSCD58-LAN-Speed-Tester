@@ -9,6 +9,7 @@ from mininet.cli import CLI
 from mininet.log import setLogLevel, info
 from mininet.link import TCLink, Intf
 from subprocess import call
+from simpleTopo import *
 
 def myNetwork():
 
@@ -30,8 +31,10 @@ def myNetwork():
     h1 = net.addHost('h1', cls=Host, ip='10.0.0.1', defaultRoute=None)
 
     info( '*** Add links\n')
-    net.addLink(s1, h1)
-    net.addLink(s1, h2)
+    h1s1 = {'delay':'10'}
+    net.addLink(h1, s1, cls=TCLink , **h1s1)
+    s1h2 = {'delay':'10'}
+    net.addLink(s1, h2, cls=TCLink , **s1h2)
 
     info( '*** Starting network\n')
     net.build()
@@ -43,11 +46,12 @@ def myNetwork():
     net.get('s1').start([c0])
 
     info( '*** Post configure switches and hosts\n')
+    
+    info( '*** Starting Simple Test ***\n')
 
-    CLI(net)
+    simpleTest(net)
     net.stop()
 
 if __name__ == '__main__':
     setLogLevel( 'info' )
     myNetwork()
-

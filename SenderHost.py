@@ -7,7 +7,7 @@ from Host import Host
 
 FILE_SIZE = 10485760
 BUFFER_SIZE = 4096
-DEFAULT_PORT = 8888
+DEFAULT_PORT = 6633
 
 # h2: basically the CLIENT
 class SenderHost(Host):
@@ -33,7 +33,7 @@ class SenderHost(Host):
         return ping
 
     def get_network_speed(self):
-        print("Upload test")
+        print("Network Speed Test")
         upload_file = open("./testFile", "rb")
         buffer = upload_file.read()
         # upload file
@@ -42,9 +42,11 @@ class SenderHost(Host):
             buffer = upload_file.read()
 
         upload_file.close()
+        speed = self.server_sock.recv(BUFFER_SIZE).decode("ascii")
+        return speed
 
 if __name__ == '__main__':
     server = SenderHost("10.0.0.2", "10.0.0.1")
     server.establish_connection()
-    print(server.latency_test())
-    print(server.get_network_speed())
+    print(f"Latency test complete, it took: {server.latency_test()}s")
+    print(f"Speed test complete, connection upload and download speed is: {server.get_network_speed()}Mbps")
