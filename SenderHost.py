@@ -17,7 +17,7 @@ class SenderHost(Host):
 
     def establish_connection(self):
         self.server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        print("Attempting to establish connection with server...")
+        print("Attempting to establish connection with other host...")
         self.server_sock.connect((self.otherIp, DEFAULT_PORT))
 
     def send_ping(self, packet_content):
